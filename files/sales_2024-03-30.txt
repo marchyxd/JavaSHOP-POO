@@ -1,0 +1,6 @@
+Client=Jiahao;Date=2024-03-30T17:09:43.115522600
+Products=Fish,600.0€;Gold,800.0€;
+Amount=1456.0€;
+Client=Mark;Date=2024-03-30T17:09:43.115522600
+Products=Apple,20.0€;Pear,40.0€;
+Amount=62.400000000000006€;
