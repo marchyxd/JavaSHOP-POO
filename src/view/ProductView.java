@@ -21,6 +21,7 @@
 	import javax.swing.JLabel;
 	import javax.swing.JOptionPane;
 	import javax.swing.JTextField;
+import java.awt.Font;
 	
 	public class ProductView extends JDialog implements ActionListener {
 	
@@ -55,19 +56,22 @@
 			contentPanel.setLayout(null);
 			
 			JLabel lblNProductName = new JLabel("Product Name:");
-			lblNProductName.setBounds(44, 70, 121, 14);
+			lblNProductName.setFont(new Font("Tahoma", Font.PLAIN, 14));
+			lblNProductName.setBounds(44, 70, 130, 28);
 			contentPanel.add(lblNProductName);
 			
 			JLabel lblProductStock = new JLabel("Product Stock");
-			lblProductStock.setBounds(44, 120, 121, 14);
+			lblProductStock.setFont(new Font("Tahoma", Font.PLAIN, 14));
+			lblProductStock.setBounds(44, 109, 130, 33);
 			contentPanel.add(lblProductStock);
 			
 			JLabel lblProductPrice = new JLabel("Product Price");
-			lblProductPrice.setBounds(44, 164, 121, 14);
+			lblProductPrice.setFont(new Font("Tahoma", Font.PLAIN, 14));
+			lblProductPrice.setBounds(44, 153, 130, 33);
 			contentPanel.add(lblProductPrice);
 			
 			textFieldProductName = new JTextField();
-			textFieldProductName.setBounds(175, 67, 86, 20);
+			textFieldProductName.setBounds(175, 76, 86, 20);
 			contentPanel.add(textFieldProductName);
 			textFieldProductName.setColumns(10);
 			textFieldProductName.addActionListener(this);
