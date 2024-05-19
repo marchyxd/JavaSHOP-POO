@@ -57,43 +57,43 @@ import java.awt.Font;
 			
 			JLabel lblNProductName = new JLabel("Product Name:");
 			lblNProductName.setFont(new Font("Tahoma", Font.PLAIN, 14));
-			lblNProductName.setBounds(44, 70, 130, 28);
+			lblNProductName.setBounds(58, 50, 130, 28);
 			contentPanel.add(lblNProductName);
 			
 			JLabel lblProductStock = new JLabel("Product Stock");
 			lblProductStock.setFont(new Font("Tahoma", Font.PLAIN, 14));
-			lblProductStock.setBounds(44, 109, 130, 33);
+			lblProductStock.setBounds(58, 89, 130, 33);
 			contentPanel.add(lblProductStock);
 			
 			JLabel lblProductPrice = new JLabel("Product Price");
 			lblProductPrice.setFont(new Font("Tahoma", Font.PLAIN, 14));
-			lblProductPrice.setBounds(44, 153, 130, 33);
+			lblProductPrice.setBounds(58, 128, 130, 33);
 			contentPanel.add(lblProductPrice);
 			
 			textFieldProductName = new JTextField();
-			textFieldProductName.setBounds(175, 76, 86, 20);
+			textFieldProductName.setBounds(198, 56, 104, 20);
 			contentPanel.add(textFieldProductName);
 			textFieldProductName.setColumns(10);
 			textFieldProductName.addActionListener(this);
 			
 			textFieldProductStock = new JTextField();
-			textFieldProductStock.setBounds(175, 117, 86, 20);
+			textFieldProductStock.setBounds(198, 97, 104, 20);
 			contentPanel.add(textFieldProductStock);
 			textFieldProductStock.setColumns(10);
 			textFieldProductStock.addActionListener(this);
 			
 			textFieldProductPrice = new JTextField();
-			textFieldProductPrice.setBounds(175, 161, 86, 20);
+			textFieldProductPrice.setBounds(198, 136, 104, 20);
 			contentPanel.add(textFieldProductPrice);
 			textFieldProductPrice.setColumns(10);
 			
 			btnOK = new JButton("OK");
-			btnOK.setBounds(44, 208, 89, 23);
+			btnOK.setBounds(87, 172, 89, 23);
 			contentPanel.add(btnOK);
 			btnOK.addActionListener(this);
 			
 			btnCancel = new JButton("Cancel");
-			btnCancel.setBounds(172, 208, 89, 23);
+			btnCancel.setBounds(194, 172, 89, 23);
 			contentPanel.add(btnCancel);
 			btnCancel.addActionListener(this);	
 			
