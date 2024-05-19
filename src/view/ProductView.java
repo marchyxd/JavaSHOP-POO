@@ -1,9 +1,12 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -11,21 +14,39 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import main.Shop;
+import model.Amount;
 import model.Product;
 import utils.Constants;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 public class ProductView extends JDialog implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
+	private Shop shop;
+	private int option;
+	private JButton btnOK;
+	private JButton btnCancel;
 	private final JPanel contentPanel = new JPanel();
 	private JTextField textFieldProductName;
 	private JTextField textFieldProductStock;
 	private JTextField textFieldProductPrice;
 
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+
+			public void run() {
+			}
+		});
+	}
+	
 	public ProductView(Shop shop, int option) {
+		this.shop = shop;
+		this.option = option;
+		
+	
 		setTitle("Add Product");
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
@@ -61,41 +82,146 @@ public class ProductView extends JDialog implements ActionListener {
 		textFieldProductPrice.setBounds(175, 161, 86, 20);
 		contentPanel.add(textFieldProductPrice);
 		textFieldProductPrice.setColumns(10);
-		textFieldProductPrice.addActionListener(this);
 		
-		{
-			JPanel buttonPane = new JPanel();
-			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
-			getContentPane().add(buttonPane, BorderLayout.SOUTH);
-			{
-				JButton okButton = new JButton("OK");
-				okButton.setActionCommand("OK");
-				buttonPane.add(okButton);
-				getRootPane().setDefaultButton(okButton);
-				okButton.addActionListener(this);
-			}
-			{
-				JButton cancelButton = new JButton("Cancel");
-				cancelButton.setActionCommand("Cancel");
-				buttonPane.add(cancelButton);
-				cancelButton.addActionListener(this);
-			}
+		btnOK = new JButton("OK");
+		btnOK.setBounds(44, 208, 89, 23);
+		contentPanel.add(btnOK);
+		btnOK.addActionListener(this);
+		
+		btnCancel = new JButton("Cancel");
+		btnCancel.setBounds(172, 208, 89, 23);
+		contentPanel.add(btnCancel);
+		btnCancel.addActionListener(this);	
+		
+		switch (this.option) {
+		case Constants.OPTION_ADD_PRODUCT: 
+			setTitle("Add Product");
+			break;
+		case Constants.OPTION_ADD_STOCK:
+			setTitle("Add Stock");
+			textFieldProductPrice.setVisible(false);
+			lblProductPrice.setVisible(false);
+			break;
+		case Constants.OPTION_REMOVE_PRODUCT:
+			setTitle("Remove Product");
+			textFieldProductPrice.setVisible(false);
+			lblProductPrice.setVisible(false);
+			textFieldProductStock.setVisible(false);
+			lblProductStock.setVisible(false);
+			break;
 		}
-		
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		Shop shop = new Shop();
 		// TODO Auto-generated method stub
-		if (e.getSource() == okButton) {
-			Product product;
+		if (e.getSource() == btnOK) {
 			switch (this.option) {
-			case Constants.OPTION_ADD_PRODUCT: {
-				product = shop.findProduct()
+			case Constants.OPTION_ADD_PRODUCT: 
+				addProduct();
+				break;
+			case Constants.OPTION_ADD_STOCK:
+				addStock();
+				break;
+			case Constants.OPTION_REMOVE_PRODUCT:
+				removeProduct();
+				break;
 			}
-			default:
-				throw new IllegalArgumentException("Unexpected value: " + this.option);
+		}
+		if (e.getSource() == btnCancel) {
+			dispose();
+		}
+	}
+
+	public void addProduct() {
+		Product product;
+		product = shop.findProduct(textFieldProductName.getText());
+		String productName = textFieldProductName.getText();
+		
+		if (productName.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Product name is empty ", "Error", JOptionPane.ERROR_MESSAGE);
+        } 
+            
+		try {
+			if(product == null) {
+            double wholesalerPrice = Double.parseDouble(textFieldProductPrice.getText());
+            product = new Product(productName, wholesalerPrice, true, Integer.parseInt(textFieldProductStock.getText()));
+            shop.addProduct(product);
+            JOptionPane.showMessageDialog(null, "New product Added ", "INFO", JOptionPane.INFORMATION_MESSAGE);
+            dispose();
+			}else {
+				JOptionPane.showMessageDialog(null, "This prouct " + productName + " Already exist","ERROR",JOptionPane.ERROR_MESSAGE);
 			}
+        } catch (NumberFormatException ex) {
+             JOptionPane.showMessageDialog(null, "Invalid product", "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+        
+	}
+	
+	public void addStock() {
+		String productName = textFieldProductName.getText();
+		String stock = textFieldProductStock.getText();
+
+		if (productName.isEmpty() || stock.isEmpty()) {
+			JOptionPane.showMessageDialog(this, "the product name/stock is empty", "ERROR",
+					JOptionPane.WARNING_MESSAGE);
+			return;
+		}
+
+		try {
+			// Pass the parameter to the correct type of data
+			int productStock = Integer.parseInt(stock);
+
+			Product product = shop.findProduct(productName);
+			// Check if the product send by the user exist
+			if (product != null) {
+				int totalStock = product.getStock() + productStock;
+				// Update the stock
+				product.setStock(totalStock);
+				JOptionPane.showMessageDialog(null, "Product stock updated", "UPDATE",
+						JOptionPane.INFORMATION_MESSAGE);
+				// Return to the ShopView
+				dispose();
+			} else {
+				// Report to the user that the product is not created, and can't update stock
+				JOptionPane.showMessageDialog(null, "Product not found", "ERROR",
+						JOptionPane.ERROR_MESSAGE);
+			}
+
+		} catch (NumberFormatException number) {
+			JOptionPane.showMessageDialog(this, "ERROR",
+					"Incorret product", JOptionPane.WARNING_MESSAGE);
+
+		}
+		
+	}
+	
+	public void removeProduct() {
+		String productName = textFieldProductName.getText();
+		
+		if (productName.isEmpty()) {
+			JOptionPane.showMessageDialog(null, 
+					"The product name is empty",
+					"ERROR",
+					JOptionPane.ERROR_MESSAGE);
+		}
+		
+		Product product;
+		product = shop.findProduct(textFieldProductName.getText());
+		
+		if(product != null) {
+			shop.getInventory().remove(product);
+			JOptionPane.showMessageDialog(null, 
+					"Product delected",
+					"INFO",
+					JOptionPane.INFORMATION_MESSAGE);
+			dispose();
+		}else {
+			JOptionPane.showMessageDialog(null, 
+					"Product not found",
+					"ERROR",
+					JOptionPane.ERROR_MESSAGE);
 		}
 	}
 	

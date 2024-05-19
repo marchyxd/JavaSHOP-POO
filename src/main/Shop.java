@@ -192,7 +192,7 @@ public class Shop {
 			    int nameStock = Integer.parseInt(textStock[1]);
 			    
 			    // Add a product with the extracted information to some data structure
-			    addProduct(new Product(nameProduct, (new Amount(namePrice * 2)), (new Amount(namePrice)), true, nameStock));
+			    addProduct(new Product(nameProduct, nameStock,true, nameStock));
 			}
 			
 		} catch (FileNotFoundException e) {
@@ -237,7 +237,7 @@ public class Shop {
         int stock = scanner.nextInt();
 
         // Add product to inventory
-        addProduct(new Product(name, new Amount(publicPrice), new Amount(wholesalerPrice), true, stock));
+        addProduct(new Product(name, wholesalerPrice, true, stock));
         
     }
 
@@ -486,6 +486,12 @@ public class Shop {
         }
         return null;
     }
+    
+    public ArrayList<Product> getInventory() {
+		return inventory;
+	}
+    
+
     
     public void remove() {
     	// Create a Scanner object to read user input

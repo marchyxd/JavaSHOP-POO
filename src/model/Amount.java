@@ -12,12 +12,6 @@ public class Amount {
      this.currency = "€"; 
  }
    
- 
- 
- 
- 
- 
- 
 
  public double getValue() {
      return value;
