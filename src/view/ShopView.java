@@ -28,11 +28,12 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
     }
 
     public ShopView() {
-    	 
+    	// Add a key listener to the frame
         addKeyListener(this);
         setFocusable(true);
         setVisible(true);
         
+        // Initialize the shop and load inventory
         shop = new Shop();
         shop.loadInventory();
         
@@ -73,8 +74,10 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
     }
 
     public void actionPerformed(ActionEvent e) {
+    	// Handle button clicks
         Object source = e.getSource();
         if (e.getSource() == btnCount) {
+        	// Open when button is clicked
             this.openCashView();
         } else if (e.getSource() == btnAddProduct) {
             this.openProductView(Constants.OPTION_ADD_PRODUCT);
@@ -87,7 +90,23 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-
+    	// Handle key press events
+    	int key = e.getKeyCode();
+		switch (key) {
+		// Open when keyboard is clicked
+		case KeyEvent.VK_1:
+			openCashView();
+			break;
+		case KeyEvent.VK_2:
+			openProductView(Constants.OPTION_ADD_PRODUCT);
+			break;
+		case KeyEvent.VK_3:
+			openProductView(Constants.OPTION_ADD_STOCK);
+			break;
+		case KeyEvent.VK_9:
+			openProductView(Constants.OPTION_REMOVE_PRODUCT);
+			
+		}
     }
 
     @Override
@@ -97,11 +116,13 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
     public void keyTyped(KeyEvent e) { }
 
     private void openCashView() {
+    	// Create and display the cash view
         CashView cashView = new CashView(shop);
         cashView.setVisible(true);
     }
 
     private void openProductView(int option) {
+    	// Create and display the product view with the specified option
         ProductView productView = new ProductView(shop, option);
         productView.setSize(400,400);
         productView.setVisible(true);

@@ -95,31 +95,43 @@ public class LoginView extends JFrame implements ActionListener {
     }
 
     private void handleLogin() {
+    	// Get the text from the username and password fields
         String username = textFieldUsername.getText();
         String password = textFieldPassword.getText();
-
+        
+        // Check if either the username or password is empty
         if (username.isEmpty() || password.isEmpty()) {
+        	// Show error message if either field is empty
             showErrorMessage("Please, introduce the user and password");
+            // Decrease login attempts count
             decrementLoginAttempts();
             return;
         }
 
         try {
+        	// Attempt to parse the username as an integer
             int userId = Integer.parseInt(username);
+            // Create a new Employee object with the given password
             Employee employee = new Employee(password);
+            // Attempt to login
             boolean loginSuccessful = employee.login(userId, password);
 
             if (loginSuccessful) {
+            	 // Show success message
                 JOptionPane.showMessageDialog(this, "Log in correct.", "Correct", JOptionPane.INFORMATION_MESSAGE);
+                // Create a new ShopView
                 ShopView shopView = new ShopView();
+                // Make the ShopView visible
                 shopView.setVisible(true);
                 dispose();
             } else {
+            	// Show error message if login is incorrect
                 showErrorMessage("Incorrect, try again");
                 resetInputFields();
                 decrementLoginAttempts();
             }
         } catch (NumberFormatException ex) {
+        	// Show error message if username is not a number
             showErrorMessage("The user must be numbers.");
             resetInputFields();
             decrementLoginAttempts();
@@ -127,16 +139,20 @@ public class LoginView extends JFrame implements ActionListener {
     }
 
     private void showErrorMessage(String message) {
+    	 // Display an error message dialog with the given message
         JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
     }
 
     private void resetInputFields() {
+    	// Clear the text fields for username and password
         textFieldUsername.setText("");
         textFieldPassword.setText("");
     }
 
     private void decrementLoginAttempts() {
+    	// Increment the login attempts count
         loginAttempts++;
+        // Check if the number of login attempts has reached the maximum allowed
         if (loginAttempts >= Constants.MAX_LOGIN_TIMES) {
             try {
                 throw new LimitLoginException();
@@ -145,6 +161,7 @@ public class LoginView extends JFrame implements ActionListener {
                 dispose();
             }
         } else {
+            // Show error message indicating the current login attempt count
             JOptionPane.showMessageDialog(this, "Error Log in. Attempt " + loginAttempts + " of " + Constants.MAX_LOGIN_TIMES, "Error", JOptionPane.ERROR_MESSAGE);
         }
     }

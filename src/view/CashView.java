@@ -19,7 +19,6 @@ public class CashView extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	private JTextField textFieldCash;
 	private Shop shop;
-	private int option;
 	
 
 	/**
@@ -28,7 +27,6 @@ public class CashView extends JDialog {
 	public CashView(Shop shop) {
 		setTitle("CashView");
 		this.shop = shop;
-		this.option = option;
 		
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
@@ -46,6 +44,7 @@ public class CashView extends JDialog {
 		textFieldCash.setBounds(53, 93, 86, 20);
 		contentPanel.add(textFieldCash);
 		textFieldCash.setColumns(10);
+		//get the total cash from shop.
 		textFieldCash.setText(String.valueOf(shop.getCash().getValue()+"€"));
 		
 	}
