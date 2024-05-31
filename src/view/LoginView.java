@@ -15,8 +15,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JTextField;
 import javax.swing.JButton;
-import javax.swing.ImageIcon;
-import javax.swing.SwingConstants;
 import java.awt.Color;
 
 public class LoginView extends JFrame implements ActionListener {
@@ -99,6 +97,9 @@ public class LoginView extends JFrame implements ActionListener {
         String username = textFieldUsername.getText();
         String password = textFieldPassword.getText();
         
+        Employee employee = new Employee();
+        boolean loginSuccessful = false;
+        
         // Check if either the username or password is empty
         if (username.isEmpty() || password.isEmpty()) {
         	// Show error message if either field is empty
@@ -111,10 +112,7 @@ public class LoginView extends JFrame implements ActionListener {
         try {
         	// Attempt to parse the username as an integer
             int userId = Integer.parseInt(username);
-            // Create a new Employee object with the given password
-            Employee employee = new Employee(password);
-            // Attempt to login
-            boolean loginSuccessful = employee.login(userId, password);
+            loginSuccessful = employee.login(userId, password);
 
             if (loginSuccessful) {
             	 // Show success message

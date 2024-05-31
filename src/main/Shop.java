@@ -124,7 +124,7 @@ public class Shop {
     public void initSession() {
 	    	Scanner scanner = new Scanner(System.in);
 			Boolean login = false;
-    		Employee employee = new Employee("Mark");
+    		Employee employee = new Employee();
     	do {
 			System.out.println("Introduce the employee number: ");
 			int user = scanner .nextInt();

@@ -7,6 +7,9 @@ public abstract class Person{
 		super();
 		this.name = name;
 	}
+	
+	public Person() {
+	}
 
 	public String getName() {
 		return name;
