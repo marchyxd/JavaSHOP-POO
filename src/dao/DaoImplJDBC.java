@@ -10,29 +10,42 @@ import model.Employee;
 
 public class DaoImplJDBC implements Dao{
 	private Connection connection;
-
+    
+	// Connects to the database
 	@Override
 	public void connect() throws SQLException {
 		// TODO Auto-generated method stub
+		// Database URL
 		String url = "jdbc:mysql://localhost:3306/shop";
+		// Database username
 		String user = "root";
+		// Database password (empty in this case)
 		String pass = "";
+		try {
+			// Establishing the connection
+			this.connection = DriverManager.getConnection(url, user, pass);
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
 		
-		this.connection = DriverManager.getConnection(url, user, pass);
 	}	
 	
-
+	// Retrieves an employee from the database using employeeId and password
 	@Override
-	public Employee getEmployee(int user, String pw) {
+	public Employee getEmployee(int employeeId, String password) {
 		Employee employee = null;
+		// SQL query to fetch employee
 		String select = "SELECT * FROM employee WHERE employeeId = ? AND password = ?";
 		try {
+			// Preparing the SQL statement
 			PreparedStatement ps = connection.prepareStatement(select);
-			ps.setInt(1, user);
-			ps.setString(2, pw);
-			// run query
+			// Setting the employeeId parameter
+			ps.setInt(1, employeeId);
+			// Setting the password parameter
+			ps.setString(2, password);
 			try (ResultSet rs = ps.executeQuery()) {
 				if (rs.next()) {
+					// Creating an Employee object from the result set
 					employee = new Employee(rs.getInt(1), rs.getString(2), rs.getString(3));
 				}
 			}
@@ -43,11 +56,13 @@ public class DaoImplJDBC implements Dao{
 		}
 		return employee;
 	}
-
+	
+	// Disconnects from the database
 	@Override
 	public void disconnect() throws SQLException {
 		// TODO Auto-generated method stub
 			if (connection != null) {
+				// Closing the database connection
 				connection.close();
 			}
 		

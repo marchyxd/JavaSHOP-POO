@@ -13,15 +13,17 @@ public class Employee extends Person implements Logeable{
 	private String password;
 	// private final int USER = 123;
 	// private final String PASSWORD = "test";
-	
+    
+	// Data access object for interacting with the database
 	private Dao dao = new DaoImplJDBC();
 	
-	public Employee(int id, String name, String pw) {
+	public Employee(int id, String name, String password) {
 		super(name);
 		this.employeeId = id;
-		this.password = pw;
+		this.password = password;
 	}
-	
+   
+	// Default constructor
 	public Employee() {
 
 	}
@@ -33,22 +35,27 @@ public class Employee extends Person implements Logeable{
 	public void setEmplyeeId(int emplyeeId) {
 		this.employeeId = emplyeeId;
 	}
-
+    
+	// Implementation of the login method from the Logeable interface
 	@Override
-	public boolean login(int user, String password) {
+	public boolean login(int employeeId, String password) {
 		try {
+			// Connect to the database
 			dao.connect();
-			Employee employee = dao.getEmployee(user, password);
+			// Fetch the employee
+			Employee employee = dao.getEmployee(employeeId, password);
 
 			if (employee != null) {
+				// Disconnect from the database
 				dao.disconnect();
+				// Return true if employee exists
 				return true;
 			}
-
+		// Print the SQL exception
 		} catch (SQLException e) {
 			System.out.println(e);
 		}
-
+		// Return false if login fails
 		return false;
 	}
 }
