@@ -107,18 +107,16 @@ public class DaoImplFile implements Dao{
 	public boolean writeInventory(ArrayList<Product> products) {
 	    DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	    String nameFile = "Inventory_" + LocalDateTime.now().format(timeFormatter) + ".txt";
-	    String directory = "./files/";
+	    String directory = "./inventory/";
 
 	    try {
-	        // Create directory if not exist.
+	        // Create directory if it does not exist
 	        File file = new File(directory);
 	        if (!file.exists()) {
-	            directory = JOptionPane.showInputDialog("Name of the new directory:");
-	            file = new File("./" + directory);
-	            file.mkdir();
+	            file.mkdirs();
 	        }
 
-	        // create new file and write the data into it.
+	        // Create the file and write product data
 	        File outputFile = new File(file, nameFile);
 	        FileWriter writer = new FileWriter(outputFile);
 	        PrintWriter printWriter = new PrintWriter(writer);
@@ -129,16 +127,19 @@ public class DaoImplFile implements Dao{
 	            printWriter.append(line);
 	            count++;
 	        }
-	        // Print the total products numbers
-	        printWriter.append("Numero total de productos:" + count + ";");
+	        // Write the total number of products
+	        printWriter.append("Total number of products:" + count + ";");
 
-	        // Close PrintWriter
+	        // Close the PrintWriter
 	        printWriter.close();
 	    } catch (IOException e) {
+	        // Show error message in case of issues while writing the file
+	        JOptionPane.showMessageDialog(null, "Error exporting inventory: " + e.getMessage(), "Export Error", JOptionPane.ERROR_MESSAGE);
 	        return false;
 	    }
 	    return true;
 	}
+
 
 
 
