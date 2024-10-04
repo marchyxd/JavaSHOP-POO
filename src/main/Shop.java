@@ -2,6 +2,7 @@ package main;
 
 
 import model.Amount;
+
 import model.Client;
 import model.Employee;
 import model.Product;
@@ -9,6 +10,10 @@ import model.Sale;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import dao.DaoImplFile;
+import dao.Dao;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.io.BufferedReader;
@@ -20,12 +25,11 @@ import java.io.PrintWriter;
 import java.io.IOException; 
 
 
-
-
 public class Shop {
     private Amount cash = new Amount(100.00);
     //private Product[] inventory;
     ArrayList<Product> inventory = new ArrayList<Product>();
+    
     private int numberProducts;
     private int numberSale;
     //private Sale[] sales;
@@ -34,6 +38,8 @@ public class Shop {
     final static double TAX_RATE = 1.04;
     LocalDateTime Date = LocalDateTime.now();
     
+    //connection to the file.
+    private Dao dao = new DaoImplFile();
     
     // Constructor
     public Shop() {
@@ -42,8 +48,14 @@ public class Shop {
         //sales = new Sale[10];
     	sales = new ArrayList<Sale>();
     }
+    
+    
 
-    // Main method
+    public void setInventory(ArrayList<Product> inventory) {
+		this.inventory = inventory;
+	}
+
+	// Main method
     public static void main(String[] args) {
         // Instance of Shop
         Shop shop = new Shop();
@@ -143,64 +155,11 @@ public class Shop {
 
     // Method to load initial inventory
     public void loadInventory() {
-        //addProduct(new Product("Apple", new Amount(10.00), new Amount(5.00), true, 10));
-        //addProduct(new Product("Pear", new Amount(20.00), new Amount(10.00), true, 20));
-        //addProduct(new Product("Hamburger", new Amount(30.00), new Amount(15.00), true, 30));
-        //addProduct(new Product("Strawberry", new Amount(5.00), new Amount(2.50), true, 20));
-    	
-    	//create a txt file to store data.
-    	File file = new File("./files/inputInventory.txt");
-    	//FileWriter filex = new FileWriter(file); 
-    	//PrintWriter x = new PrintWriter(file)
-    	//check if the file not exist, show the error message
-    	if(!file.exists()) {
-    		System.out.println("No file founded");
-    	}
-    	Scanner myReader;
-		try {
-			//read all the file
-			myReader = new Scanner(file);
-			
-			// Loop through each line in the file
-			while (myReader.hasNextLine()) {
-			    // Read the next line from the file
-			    String data = myReader.nextLine();
-			    
-			    // Separate the data between the semicolons
-			    String[] text = data.split(";");
-			    
-			    // Declare the first part as the product name
-			    String productName = text[0]; 
-			    
-			    // Declare the second part as the price
-			    String price = text[1];
-			    
-			    // Declare the third part as the number of stock
-			    String stock = text[2];
-			    
-			    // Further separate the product name, price, and stock using colons
-			    // Extract the product name
-			    String[] textProduct = productName.split(":");  
-			    String nameProduct = textProduct[1];
-			    
-			    // Extract the price and parse it into a Double
-			    String[] textPrice = price.split(":");  
-			    Double namePrice = Double.parseDouble(textPrice[1]);
-			    
-			    // Extract the stock and parse it into an Integer
-			    String[] textStock = stock.split(":");  
-			    int nameStock = Integer.parseInt(textStock[1]);
-			    
-			    // Add a product with the extracted information to some data structure
-			    addProduct(new Product(nameProduct, nameStock,true, nameStock));
-			}
-			
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        
-    	
+    	this.setInventory(dao.getInventory());
+    }
+    
+    public boolean writeInventory() {
+    	return dao.writeInventory(this.inventory);
     }
 
     // Method to display current cash
@@ -400,35 +359,7 @@ public class Shop {
         	System.out.println("Operation finished");
         }
         if(option.equalsIgnoreCase("Y")) {
-        	try {
-        		// Creating a file object with a dynamic name including the current date
-                File file = new File("./files/sales_" + Date.toLocalDate() + ".txt");
-                // Checking if the file exists, if not, creating it
-                if (file.createNewFile()) {
-                    System.out.println("File created: " + file.getName());
-                    // Initializing file writer and print writer to write into the file
-                    FileWriter writer = new FileWriter(file);
-                    PrintWriter printWriter = new PrintWriter(writer);
-                    // Iterating through the sales list and writing data into the file
-                    for (Sale sale : sales) {
-                        printWriter.println("Client=" + sale.getClient() + ";Date=" + Date);
-                        String products = "";
-                        for (Product product : sale.getProducts()) {
-                            products += product.getName() + "," + product.getPublicPrice().getValue() + "€;";
-                        }
-                        printWriter.println("Products=" + products);
-                        printWriter.println("Amount=" + sale.getAmount().getValue() + "€;");
-                    }
-                    printWriter.close();
-                    System.out.println("Sales data exported successfully.");
-                    
-                } else {
-                    System.out.println("File already exists.");
-                }
-            } catch (IOException e) {
-                System.out.println("An error occurred.");
-                e.printStackTrace();
-            }
+        	writeInventory();
         }
     }
     

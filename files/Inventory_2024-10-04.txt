@@ -1,0 +1,5 @@
+1;Product:Apple;Stock:50
+2;Product:Pear;Stock:50
+3;Product:Hamburger;Stock:50
+4;Product:Strawberry;Stock:50
+Numero total de productos:4;
