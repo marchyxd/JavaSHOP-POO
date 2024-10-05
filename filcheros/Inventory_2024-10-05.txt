@@ -2,5 +2,4 @@
 2;Product:Pear;Stock:50
 3;Product:Hamburger;Stock:50
 4;Product:Strawberry;Stock:50
-5;Product:water;Stock:30
-Total number of products:5;
+Total number of products:4;
