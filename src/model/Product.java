@@ -5,10 +5,10 @@ public class Product {
     private String name;
     private Amount publicPrice;
     private Amount wholesalerPrice;
-    private String Currency;
     private boolean available;
     private int stock;
     private static int totalProducts;
+    private String Currency;
     
     static double EXPIRATION_RATE=0.60;
     
@@ -23,6 +23,7 @@ public class Product {
 		totalProducts++;
 	}
     
+    //constructor for xml
     public Product(String name) {
     	this.name = name;
     }

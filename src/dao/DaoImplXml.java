@@ -66,16 +66,25 @@ public class DaoImplXml implements Dao{
 
 	@Override
 	public boolean writeInventory(ArrayList<Product> product) {
-		boolean getReport = false;
-
+		//boolan for check if the xml is created
+		boolean generateReport = false;
+		//setting the file output formatter
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		LocalDateTime date = LocalDateTime.now();
 		String nameFile = "inventory_" + date.format(formatter) + ".xml";
-
+		//create and use a DomWriter
 		DomWriter domWriter = new DomWriter(nameFile);
-		getReport = domWriter.generateReport(product);
-
-		return getReport;
+		//check the file xml if created correctly
+		generateReport = domWriter.generateReport(product);
+		
+	    // Display confirmation message if the file was generated successfully
+	    if (generateReport) {
+	        System.out.println("File successfully exported to: ./xml/" + nameFile);
+	    } else {
+	        System.out.println("Error exporting the file.");
+	    }
+		//return true.
+		return generateReport;
 	}
 
 }
