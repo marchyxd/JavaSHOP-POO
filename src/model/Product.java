@@ -5,6 +5,7 @@ public class Product {
     private String name;
     private Amount publicPrice;
     private Amount wholesalerPrice;
+    private String Currency;
     private boolean available;
     private int stock;
     private static int totalProducts;
@@ -20,6 +21,18 @@ public class Product {
 		this.available = available;
 		this.stock = stock;
 		totalProducts++;
+	}
+    
+    public Product(String name) {
+    	this.name = name;
+    }
+    
+	public void setCurrency(String Currency) {
+		this.Currency = (Currency);
+	}
+
+	public String getCurrency() {
+		return this.Currency;
 	}
 
 	public int getId() {

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import dao.DaoImplFile;
+import dao.DaoImplXml;
 import dao.Dao;
 
 import java.time.LocalDateTime;
@@ -39,8 +40,10 @@ public class Shop {
     LocalDateTime Date = LocalDateTime.now();
     
     //connection to the file.
-    private Dao dao = new DaoImplFile();
-    
+    private DaoImplFile daoFile = new DaoImplFile();
+    //connection to the xml.
+	private DaoImplXml daoXml = new DaoImplXml();
+	
     // Constructor
     public Shop() {
         //inventory = new Product[10];
@@ -155,11 +158,11 @@ public class Shop {
 
     // Method to load initial inventory
     public void loadInventory() {
-    	this.setInventory(dao.getInventory());
+    	this.setInventory(daoXml.getInventory());
     }
     
     public boolean writeInventory() {
-    	return dao.writeInventory(this.inventory);
+    	return daoXml.writeInventory(inventory);
     }
 
     // Method to display current cash

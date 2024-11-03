@@ -3,15 +3,14 @@ package model;
 
 public class Amount {
  private double value;
- private String currency;
+ final private String currency = "€";
 
  
  public Amount(double value) {
      super();
 	 this.value = value;
-     this.currency = "€"; 
  }
-   
+	
 
  public double getValue() {
      return value;
@@ -25,9 +24,6 @@ public class Amount {
      return currency;
  }
 
- public void setCurrency(String currency) {
-     this.currency = currency;
- }
 
  @Override
  public String toString() {
