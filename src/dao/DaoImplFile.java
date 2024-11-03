@@ -106,7 +106,7 @@ public class DaoImplFile implements Dao{
 	@Override
 	public boolean writeInventory(ArrayList<Product> products) {
 	    DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-	    String nameFile = "Inventory_" + LocalDateTime.now().format(timeFormatter) + ".txt";
+	    String nameFile = "inventory_" + LocalDateTime.now().format(timeFormatter) + ".txt";
 	    String directory = "./files/";
 
 	    try {
