@@ -55,10 +55,9 @@ public class SaxReader extends DefaultHandler {
 		switch (parsedElement) {
 		case "product":
 			break;
-		case "price":
-			this.product.setWholesalerPrice(new Amount(Double.parseDouble(value)));
-			// Set public price for the product
-			this.product.setPublicPrice(new Amount(Double.parseDouble(value) * 2));
+		case "wholesalerPrice":
+		        this.product.setWholesalerPrice(new Amount(Double.parseDouble(value)));
+		        this.product.setPublicPrice(new Amount(Double.parseDouble(value) * 2));
 			break;
 		case "stock":
 			this.product.setStock(Integer.valueOf(value));

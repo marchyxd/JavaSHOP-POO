@@ -56,7 +56,7 @@ public class DomWriter {
 			newProduct.appendChild(productName);
 
 			Element productPrice = document.createElement("price");
-			productPrice.setAttribute("currency", "€");
+			productPrice.setAttribute("currency", product.getWholesalerPrice().getCurrency());
 			productPrice.setTextContent(String.valueOf(product.getWholesalerPrice().getValue()));
 			newProduct.appendChild(productPrice);
 
