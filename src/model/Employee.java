@@ -39,7 +39,6 @@ public class Employee extends Person implements Logeable{
 	// Implementation of the login method from the Logeable interface
 	@Override
 	public boolean login(int employeeId, String password) {
-		try {
 			// Connect to the database
 			dao.connect();
 			// Fetch the employee
@@ -50,12 +49,9 @@ public class Employee extends Person implements Logeable{
 				dao.disconnect();
 				// Return true if employee exists
 				return true;
-			}
-		// Print the SQL exception
-		} catch (SQLException e) {
-			System.out.println(e);
-		}
-		// Return false if login fails
-		return false;
+			}else {
+				// Return false if login fails
+				return false;
+			} 
 	}
 }

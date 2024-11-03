@@ -15,7 +15,7 @@ public class DaoImplJDBC implements Dao{
     
 	// Connects to the database
 	@Override
-	public void connect() throws SQLException {
+	public void connect()  {
 		// TODO Auto-generated method stub
 		// Database URL
 		String url = "jdbc:mysql://localhost:3306/shop";
@@ -61,12 +61,17 @@ public class DaoImplJDBC implements Dao{
 	
 	// Disconnects from the database
 	@Override
-	public void disconnect() throws SQLException {
-		// TODO Auto-generated method stub
-			if (connection != null) {
-				// Closing the database connection
+	public void disconnect() {
+		// TODO Auto-generated method stub       
+		// Database disconnection
+        if (connection != null) {
+            try {
 				connection.close();
+			} catch (SQLException e) {
+				System.err.println("Error disconnecting the database.");
+				e.getMessage();
 			}
+        }
 		
 	}
 
