@@ -47,7 +47,7 @@ public class SaxReader extends DefaultHandler {
 			break;
 		case "wholesalerPrice":
             // Set the currency for the wholesaler price from the "currency" attribute
-			this.product.setCurrency(attributes.getValue("currency"));
+			//this.product.setCurrency(attributes.getValue("currency"));
 			break;
 		}
 		this.parsedElement = qName;

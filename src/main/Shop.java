@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import dao.DaoImplFile;
+import dao.DaoImplJaxb;
 import dao.DaoImplXml;
 import dao.Dao;
 
@@ -41,8 +42,10 @@ public class Shop {
     
     //connection to the file.
     private DaoImplFile daoFile = new DaoImplFile();
-    //connection to the xml.
+    //connection to the XML.
 	private DaoImplXml daoXml = new DaoImplXml();
+	//connection to the JAXB.
+	private DaoImplJaxb daoJaxb = new DaoImplJaxb();
 	
     // Constructor
     public Shop() {
@@ -158,11 +161,11 @@ public class Shop {
 
     // Method to load initial inventory
     public void loadInventory() {
-    	this.setInventory(daoXml.getInventory());
+    	this.setInventory(daoJaxb.getInventory());
     }
     
     public boolean writeInventory() {
-    	return daoXml.writeInventory(inventory);
+    	return daoJaxb.writeInventory(inventory);
     }
 
     // Method to display current cash
