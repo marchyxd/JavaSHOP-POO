@@ -75,7 +75,7 @@ public class DomWriter {
 
 	        // Create and append the "stock" element with the product's stock quantity.
 			Element productStock = document.createElement("stock");
-			productStock.setTextContent(String.valueOf(product.getStock()));
+			productStock.setTextContent(Integer.toString(product.getStock()));
 			newProduct.appendChild(productStock);
 		}
 	    // Generate the XML file from the document and return the success status.
