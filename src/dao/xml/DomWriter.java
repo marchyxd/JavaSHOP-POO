@@ -50,7 +50,7 @@ public class DomWriter {
 	public boolean generateReport(ArrayList<Product> products) {
 		// Create the root element "products" and set its "total" attribute to the number of products.
 		Element parentNode = document.createElement("products");
-		parentNode.setAttribute("total", String.valueOf(products.size()));
+		parentNode.setAttribute("total", String.valueOf(Product.getTotalProducts()));
 	    // Append the parent node to the document.
 		document.appendChild(parentNode);
 		
@@ -75,7 +75,7 @@ public class DomWriter {
 
 	        // Create and append the "stock" element with the product's stock quantity.
 			Element productStock = document.createElement("stock");
-			productStock.setTextContent(String.valueOf(product.getStock()));
+			productStock.setTextContent(Integer.toString(product.getStock()));
 			newProduct.appendChild(productStock);
 		}
 	    // Generate the XML file from the document and return the success status.
