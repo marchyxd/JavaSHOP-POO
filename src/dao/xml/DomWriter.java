@@ -50,7 +50,7 @@ public class DomWriter {
 	public boolean generateReport(ArrayList<Product> products) {
 		// Create the root element "products" and set its "total" attribute to the number of products.
 		Element parentNode = document.createElement("products");
-		parentNode.setAttribute("total", String.valueOf(products.size()));
+		parentNode.setAttribute("total", String.valueOf(Product.getTotalProducts()));
 	    // Append the parent node to the document.
 		document.appendChild(parentNode);
 		

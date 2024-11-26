@@ -15,6 +15,7 @@ public class Product {
     private Amount wholesalerPrice;
     private boolean available;
     private int stock;
+    
     private static int totalProducts;
     
     static double EXPIRATION_RATE=0.60;
@@ -32,6 +33,7 @@ public class Product {
     
     //constructor for XML
     public Product(String name) {
+    	this.id = totalProducts + 1;
     	this.name = name;
     }
     
