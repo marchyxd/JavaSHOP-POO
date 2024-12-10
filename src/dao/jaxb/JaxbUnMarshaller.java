@@ -42,7 +42,7 @@ public class JaxbUnMarshaller {
         for (Product prodct : products.getProducts()) {
             // Set the public price as twice the wholesaler price, if the latter is not null.
             if (prodct.getWholesalerPrice() != null) {
-                prodct.setPublicPrice(new Amount(prodct.getWholesalerPrice().getValue() * 2));
+                prodct.setWholesalerPrice(new Amount(prodct.getWholesalerPrice().getValue() * 2));
             }
 
             // Mark the product as available if its stock is greater than or equal to 1.
