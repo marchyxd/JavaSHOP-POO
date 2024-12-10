@@ -1,5 +1,6 @@
 package dao;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import dao.jaxb.JaxbMarshaller;
@@ -7,7 +8,7 @@ import dao.jaxb.JaxbUnMarshaller;
 import model.Employee;
 import model.Product;
 
-public class DaoImplJaxb implements Dao {
+public class DaoImplJaxb implements Dao  {
 
 	@Override
 	public void connect() {
@@ -28,7 +29,7 @@ public class DaoImplJaxb implements Dao {
 	}
 
 	@Override
-	public ArrayList<Product> getInventory() {
+	public ArrayList<Product> getInventory()throws SQLException {
 		JaxbUnMarshaller jaxbUnMarshaller = new JaxbUnMarshaller();
 		return jaxbUnMarshaller.read();
 	}

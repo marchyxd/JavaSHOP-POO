@@ -31,6 +31,17 @@ public class Product {
 		totalProducts++;
 	}
     
+    
+    public Product( int id, String name, double wholesalerPrice, boolean available, int stock) {
+ 		super();
+ 		this.id = id+1;
+ 		this.name = name;	
+ 		this.publicPrice = new Amount(wholesalerPrice * 2);
+        this.wholesalerPrice = new Amount(wholesalerPrice);
+ 		this.available = available;
+ 		this.stock = stock;
+ 	}
+    
     //constructor for XML
     public Product(String name) {
     	this.id = totalProducts + 1;

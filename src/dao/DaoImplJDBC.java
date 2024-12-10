@@ -5,9 +5,11 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import model.Employee;
+import model.Person;
 import model.Product;
 
 public class DaoImplJDBC implements Dao{
@@ -59,6 +61,8 @@ public class DaoImplJDBC implements Dao{
 		return employee;
 	}
 	
+	
+	
 	// Disconnects from the database
 	@Override
 	public void disconnect() {
@@ -76,11 +80,21 @@ public class DaoImplJDBC implements Dao{
 	}
 
 	@Override
-	public ArrayList<Product> getInventory() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public ArrayList<Product> getInventory() throws SQLException {
+		ArrayList<Product> products = new ArrayList<Product>();
+		try (Statement ps = connection.createStatement()) {
 
+			try (ResultSet rs = ps.executeQuery("SELECT * FROM inventory")) {
+				// for each result add to list
+				while (rs.next()) {
+					// get data for each person from column
+					products.add(
+							new Product(rs.getInt(1),rs.getString(2), rs.getInt(3),rs.getBoolean(4),rs.getInt(5)));
+				}
+			}
+		}
+		return products;
+	}
 	@Override
 	public boolean writeInventory(ArrayList<Product> product) {
 		// TODO Auto-generated method stub
