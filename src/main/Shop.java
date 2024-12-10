@@ -24,6 +24,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.io.IOException; 
 
 
@@ -41,11 +42,11 @@ public class Shop {
     LocalDateTime Date = LocalDateTime.now();
     
     //connection to the file.
-    private DaoImplFile daoFile = new DaoImplFile();
+    //private DaoImplFile daoFile = new DaoImplFile();
     //connection to the XML.
-	private DaoImplXml daoXml = new DaoImplXml();
+	//private DaoImplXml daoXml = new DaoImplXml();
 	//connection to the JAXB.
-	private DaoImplJaxb daoJaxb = new DaoImplJaxb();
+	private Dao dao = new DaoImplJaxb();
 	
     // Constructor
     public Shop() {
@@ -62,7 +63,7 @@ public class Shop {
 	}
 
 	// Main method
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         // Instance of Shop
         Shop shop = new Shop();
         // Load initial inventory
@@ -161,11 +162,16 @@ public class Shop {
 
     // Method to load initial inventory
     public void loadInventory() {
-    	this.setInventory(daoJaxb.getInventory());
+    	try {
+			this.setInventory(dao.getInventory());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
     
-    public boolean writeInventory() {
-    	return daoJaxb.writeInventory(inventory);
+    public boolean writeInventory(){
+    	return dao.writeInventory(inventory);
     }
 
     // Method to display current cash

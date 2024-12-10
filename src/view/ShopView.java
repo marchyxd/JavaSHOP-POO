@@ -9,6 +9,7 @@ import utils.Constants;
 import java.awt.Font;
 import java.awt.Color;
 import java.awt.event.*;
+import java.sql.SQLException;
 
 public class ShopView extends JFrame implements ActionListener, KeyListener {
     private static final long serialVersionUID = 1L;
