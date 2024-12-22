@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import dao.DaoImplFile;
+import dao.DaoImplJDBC;
 import dao.DaoImplJaxb;
 import dao.DaoImplXml;
 import dao.Dao;
@@ -45,8 +46,8 @@ public class Shop {
     //private DaoImplFile daoFile = new DaoImplFile();
     //connection to the XML.
 	//private DaoImplXml daoXml = new DaoImplXml();
-	//connection to the JAXB.
-	private Dao dao = new DaoImplJaxb();
+	//connection to the Dao
+	private Dao dao = new DaoImplJDBC();
 	
     // Constructor
     public Shop() {
@@ -222,7 +223,9 @@ public class Shop {
         if (product != null) {
             System.out.print("Select the quantity to add: ");
             int stockToAdd = scanner.nextInt();
+            
             product.setStock(product.getStock() + stockToAdd);
+            product.setStock(stockToAdd);
             System.out.println("The stock of product " + name + " has been updated to " + product.getStock());
           //else not exist the product. 
         } else {

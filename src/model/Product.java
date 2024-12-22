@@ -34,12 +34,13 @@ public class Product {
     
     public Product( int id, String name, double wholesalerPrice, boolean available, int stock) {
  		super();
- 		this.id = id+1;
+ 		this.id = id;
  		this.name = name;	
  		this.publicPrice = new Amount(wholesalerPrice * 2);
         this.wholesalerPrice = new Amount(wholesalerPrice);
  		this.available = available;
  		this.stock = stock;
+ 		Product.totalProducts++;
  	}
     
     //constructor for XML
