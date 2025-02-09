@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import dao.DaoImplFile;
+import dao.DaoImplHibernate;
 import dao.DaoImplJDBC;
 import dao.DaoImplJaxb;
 import dao.DaoImplXml;
@@ -47,7 +48,7 @@ public class Shop {
     //connection to the XML.
 	//private DaoImplXml daoXml = new DaoImplXml();
 	//connection to the Dao
-	private Dao dao = new DaoImplJDBC();
+	private Dao dao = new DaoImplHibernate();
 	
     // Constructor
     public Shop() {
