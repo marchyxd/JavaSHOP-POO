@@ -1,5 +1,6 @@
 package dao;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -37,19 +38,26 @@ public class DaoImplHibernate implements Dao {
     @Override
     public ArrayList<Product> getInventory() throws SQLException {
         connect();
-        ArrayList<Product> productsList = new ArrayList<>();
-        try {
-            tx = session.beginTransaction();
-            Query<Product> query = session.createQuery("FROM Product", Product.class);
-            productsList.addAll(query.getResultList());
-            tx.commit();
-        } catch (Exception e) {
-            if (tx != null) tx.rollback();
-            e.printStackTrace();
-        } finally {
-            disconnect();
-        }
-        return productsList;
+        ArrayList<Product> productsList = new ArrayList<Product>();
+		try {
+			tx = session.beginTransaction();
+			Query<Product> query = session.createQuery("FROM Product p", Product.class);
+			List<Product> list = query.list();
+			productsList.addAll(list);
+
+			for (Product product : productsList) {
+				product.setPrice(product.getPrice());
+			}
+			
+			tx.commit();
+		} catch (HibernateException e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+		return productsList;
     }
 
 
@@ -57,82 +65,77 @@ public class DaoImplHibernate implements Dao {
     public boolean writeInventory(ArrayList<Product> productList) {
         boolean isExported = false;
         connect();
-        try {
-            tx = session.beginTransaction();
-            Date today = new Date();
-            for (Product inventoryProduct : productList) {
-                ProductHistory history = new ProductHistory();
-                history.setIdProduct(inventoryProduct.getId());
-                history.setName(inventoryProduct.getName());
-                history.setPrice(inventoryProduct.getPrice());
-                history.setStock(inventoryProduct.getStock());
-                history.setCreatedAt(today);
-
-                Query<ProductHistory> query = session.createQuery(
-                    "FROM ProductHistory WHERE idProduct = :idProduct", ProductHistory.class);
-                query.setParameter("idProduct", inventoryProduct.getId());
-                if (query.getResultList().isEmpty()) {
-                    session.save(history);
-                }
-            }
-            tx.commit();
-            isExported = true;
-        } catch (Exception e) {
-            if (tx != null) tx.rollback();
-            e.printStackTrace();
-        } finally {
-            disconnect();
-        }
-        return isExported;
+        Date today = new Date();
+		try {
+			tx = session.beginTransaction();
+			for (Product product : productList) {
+				ProductHistory history = new ProductHistory();
+				history.setIdProduct(product.getId());
+				history.setName(product.getName());
+				history.setPrice(product.getPrice());
+				history.setStock(product.getStock());
+				history.setCreatedAt(today);
+				session.save(history);
+			}
+			tx.commit();
+			isExported = true;
+		} catch (HibernateException e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+		return isExported;
     }
 
     @Override
     public void addProduct(Product product) {
         connect();
         try {
-            tx = session.beginTransaction();
-            if (product.getWholesalerPrice() != null) {
-                product.setPrice(product.getWholesalerPrice().getValue());
-            }
-            session.save(product);
-            tx.commit();
-        } catch (Exception e) {
-            if (tx != null) tx.rollback();
-            e.printStackTrace();
-        } finally {
-            disconnect();
-        }
+			tx = session.beginTransaction();
+			product.setPrice(product.getWholesalerPrice().getValue());
+			session.save(product);
+			tx.commit();
+		} catch (HibernateException e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
     }
 
     @Override
     public void deleteProduct(Product product) {
         connect();
         try {
-            tx = session.beginTransaction();
-            session.delete(product);
-            tx.commit();
-        } catch (Exception e) {
-            if (tx != null) tx.rollback();
-            e.printStackTrace();
-        } finally {
-            disconnect();
-        }
+			tx = session.beginTransaction();
+			session.remove(product);
+			tx.commit();
+		} catch (HibernateException e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
     }
 
-    //todos los cambios en el inventario se guardarán en la base de datos.
     @Override
     public void updateProduct(Product product) {
         connect();
         try {
-            tx = session.beginTransaction();
-            session.update(product);
-            tx.commit();
-        } catch (Exception e) {
-            if (tx != null) tx.rollback();
-            e.printStackTrace();
-        } finally {
-            disconnect();
-        }
+			tx = session.beginTransaction();
+			session.update(product);
+			tx.commit();
+		} catch (HibernateException e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
     }
 
 }
