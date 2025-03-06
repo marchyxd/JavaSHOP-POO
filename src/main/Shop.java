@@ -109,6 +109,12 @@ public class Shop {
     }
 
     public void addProduct(Product newProduct) {
+        if (newProduct != null) {
+            dao.addProduct(newProduct);
+            inventory.add(newProduct);
+            System.out.println("Product added successfully.");
+            return;
+        }
         Scanner scanner = new Scanner(System.in);
         System.out.print("Product name: ");
         String name = scanner.nextLine();

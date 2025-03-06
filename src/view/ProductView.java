@@ -119,7 +119,6 @@ public class ProductView extends JDialog implements ActionListener {
         String priceText = textFieldProductPrice.getText().trim();
         String stockText = textFieldProductStock.getText().trim();
 
-        // Validation
         if (productName.isEmpty() || priceText.isEmpty() || stockText.isEmpty()) {
             JOptionPane.showMessageDialog(this, "All fields must be filled!", "Error", JOptionPane.ERROR_MESSAGE);
             return;
@@ -137,6 +136,7 @@ public class ProductView extends JDialog implements ActionListener {
 
             Product newProduct = new Product(productName, price, true, stock);
             shop.addProduct(newProduct);
+            
             JOptionPane.showMessageDialog(this, "Product added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
             dispose();
         } catch (NumberFormatException ex) {
