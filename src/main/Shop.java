@@ -13,6 +13,8 @@ import javax.swing.JDialog;
 
 import dao.Dao;
 import dao.DaoImplHibernate;
+import dao.DaoImplJDBC;
+import dao.DaoImplMongoDB;
 
 import java.time.LocalDateTime;
 import java.sql.SQLException;
@@ -28,7 +30,7 @@ public class Shop {
     public Shop() {
         this.inventory = new ArrayList<>();
         this.sales = new ArrayList<>();
-        this.dao = new DaoImplHibernate();
+        this.dao = new DaoImplMongoDB();
     }
 
     public static void main(String[] args) {

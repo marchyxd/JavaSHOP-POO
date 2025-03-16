@@ -1,0 +1,76 @@
+// Use the shop database
+use shop
+
+// Clear collections if they already exist
+db.inventory.drop()
+db.historical_inventory.drop()
+db.user.drop()
+
+// Create user collection
+db.createCollection("user")
+db.user.insertMany([
+  {
+    _id: ObjectId(),
+    employeeId: 111,
+    name: "Jiahao",
+    password: "stucom"
+  },
+  {
+    _id: ObjectId(),
+    employeeId: 333,
+    name: "admin",
+    password: "stucom"
+  }
+])
+
+// Create inventory collection with the exact required structure
+db.createCollection("inventory")
+db.inventory.insertMany([
+  {
+    _id: ObjectId(),
+    name: "Apple",
+    wholesalerPrice: {
+      value: 10.5,
+      currency: "€"
+    },
+    available: true,
+    stock: 50,
+    id: 1  // Ensure 'id' field is present
+  },
+  {
+    _id: ObjectId(),
+    name: "Strawberry",
+    wholesalerPrice: {
+      value: 5.5,
+      currency: "€"
+    },
+    available: true,
+    stock: 50,
+    id: 2  // Ensure 'id' field is present
+  },
+  {
+    _id: ObjectId(),
+    name: "Pear",
+    wholesalerPrice: {
+      value: 8.0,
+      currency: "€"
+    },
+    available: true,
+    stock: 50,
+    id: 3  // Ensure 'id' field is present
+  },
+  {
+    _id: ObjectId(),
+    name: "Hamburger",
+    wholesalerPrice: {
+      value: 15.0,
+      currency: "€"
+    },
+    available: true,
+    stock: 50,
+    id: 4  // Ensure 'id' field is present
+  }
+])
+
+// Create historical inventory collection (initially empty)
+db.createCollection("historical_inventory")

@@ -53,7 +53,7 @@ public class DaoImplJDBC implements Dao {
             try (ResultSet rs = ps.executeQuery()) {
                 // If a result is found, create an Employee object
                 if (rs.next()) {
-                    employee = new Employee(rs.getInt(1), rs.getString(2), rs.getString(3));
+                   // employee = new Employee(rs.getInt(1), rs.getString(2), rs.getString(3));
                 }
             }
         } catch (SQLException e) {
