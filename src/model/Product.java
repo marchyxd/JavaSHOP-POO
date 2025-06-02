@@ -23,7 +23,7 @@ public class Product {
     private Amount wholesalerPrice;
 
     @Column(nullable = false)
-    private Double price;
+    private double price;
 
     @Column(nullable = false)
     private boolean available;
@@ -139,8 +139,8 @@ public class Product {
         return price;
     }
 
-    public void setPrice(Double price) {
-        this.price = (price != null) ? price : 0.0;
+    public void setPrice(double price) {
+        this.price = price;
         this.wholesalerPrice = new Amount(this.price);
         this.publicPrice = new Amount(this.price * 2);
     }

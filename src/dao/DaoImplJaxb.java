@@ -12,20 +12,15 @@ public class DaoImplJaxb implements Dao  {
 
 	@Override
 	public void connect() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public Employee getEmployee(int employeeId, String password) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void disconnect() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -42,20 +37,14 @@ public class DaoImplJaxb implements Dao  {
 
 	@Override
 	public void addProduct(Product product) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void updateProduct(Product product) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void deleteProduct(Product product) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

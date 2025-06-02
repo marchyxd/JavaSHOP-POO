@@ -55,7 +55,7 @@ public class DaoImplMongoDB implements Dao {
             database = mongoClient.getDatabase("shop");
             inventoryCollection = database.getCollection("inventory");
             historicalInventoryCollection = database.getCollection("historical_inventory");
-            userCollection = database.getCollection("user");
+            userCollection = database.getCollection("users");
 
             // Initialize the ID counter by finding the highest ID in both collections
             if (idCounter == 0) {
@@ -215,6 +215,12 @@ public class DaoImplMongoDB implements Dao {
             throw new SQLException("Failed to retrieve inventory from MongoDB", e);
         }
 
+        // print all products in inventory
+        System.out.println("Products in inventory:");
+        for (Product product : inventory) {
+            System.out.println(product);
+        }
+
         return inventory;
     }
 
@@ -229,11 +235,6 @@ public class DaoImplMongoDB implements Dao {
     public boolean writeInventory(ArrayList<Product> products) {
         connect();
         try {
-            // First, clear the historical inventory to ensure it reflects current state
-            historicalInventoryCollection.drop();
-            database.createCollection("historical_inventory");
-            historicalInventoryCollection = database.getCollection("historical_inventory");
-            
             Date currentDate = new Date();
             System.out.println("Exporting inventory to historical collection...");
 
@@ -272,6 +273,7 @@ public class DaoImplMongoDB implements Dao {
             return true;
         } catch (Exception e) {
             System.err.println("Error writing inventory to historical collection: " + e.getMessage());
+            javax.swing.JOptionPane.showMessageDialog(null, "Error writing inventory to historical collection: " + e.getMessage(), "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
             return false;
         }
