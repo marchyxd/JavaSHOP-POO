@@ -19,7 +19,7 @@ public class ProductHistory {
 	@Column(name = "name")
 	private String name;
 	
-	@Column(name = "price")
+	@Column(name = "wholesalerPrice")
 	private double price;
 	
 	@Column(name = "stock")

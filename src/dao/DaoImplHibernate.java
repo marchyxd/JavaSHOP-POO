@@ -62,32 +62,32 @@ public class DaoImplHibernate implements Dao {
 
 	@Override
 	public boolean writeInventory(ArrayList<Product> productList) {
-	    boolean isExported = false;
-	    connect();
-	    try {
-	        tx = session.beginTransaction();
-	        Date today = new Date();
-	        for (Product inventoryProduct : productList) {
-	            ProductHistory history = new ProductHistory();
-	            history.setIdProduct(inventoryProduct.getId());
-	            history.setName(inventoryProduct.getName());
-	            history.setPrice(inventoryProduct.getPrice());
-	            history.setStock(inventoryProduct.getStock());
-	            history.setAvailable(inventoryProduct.isAvailable() ? 1 : 0);
-	            history.setCreatedAt(today);
-	            
-	            session.save(history);
-	        }
-	        tx.commit();
-	        isExported = true;
-	    } catch (Exception e) {
-	        if (tx != null)
-	            tx.rollback();
-	        e.printStackTrace();
-	    } finally {
-	        disconnect();
-	    }
-	    return isExported;
+		boolean isExported = false;
+		connect();
+		try {
+			tx = session.beginTransaction();
+			Date today = new Date();
+			for (Product inventoryProduct : productList) {
+				ProductHistory history = new ProductHistory();
+				history.setIdProduct(inventoryProduct.getId());
+				history.setName(inventoryProduct.getName());
+				history.setPrice(inventoryProduct.getPrice());
+				history.setStock(inventoryProduct.getStock());
+				history.setAvailable(inventoryProduct.isAvailable() ? 1 : 0);
+				history.setCreatedAt(today);
+				
+				session.save(history);
+			}
+			tx.commit();
+			isExported = true;
+		} catch (Exception e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+		return isExported;
 	}
 
 	@Override
