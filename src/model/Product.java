@@ -22,7 +22,7 @@ public class Product {
     @Transient
     private Amount wholesalerPrice;
 
-    @Column(nullable = false)
+    @Column(name = "wholesalerPrice", nullable = false)
     private double price;
 
     @Column(nullable = false)

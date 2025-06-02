@@ -16,12 +16,12 @@ INSERT INTO employee (employeeId, name, password) VALUES
 CREATE TABLE inventory (
   id INT(11) AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(45),
-  price DOUBLE,
+  wholesalerPrice DOUBLE,
   available TINYINT(1),
   stock INT(11)
 );
 
-INSERT INTO inventory (name, price, available, stock) VALUES
+INSERT INTO inventory (name, wholesalerPrice, available, stock) VALUES
   ('Apple', 10, 1, 50),
   ('Strawberry', 5, 1, 50),
   ('Pear', 20, 1, 50),
