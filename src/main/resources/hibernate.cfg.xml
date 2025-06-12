@@ -14,7 +14,7 @@
         <property name="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</property>
 
         <!-- Configuración del esquema de la base de datos -->
-        <property name="hibernate.hbm2ddl.auto">update</property>
+        <property name="hibernate.hbm2ddl.auto">validate</property>
 
         <!-- Mostrar consultas SQL en consola -->
         <property name="hibernate.show_sql">true</property>
@@ -22,6 +22,6 @@
         <!-- Mapear clases del modelo -->
         <mapping class="model.Product"/>
         <mapping class="model.ProductHistory"/>
-        <!-- La clase Employee no se mapea con Hibernate -->
+        <mapping class="model.Employee"/>
     </session-factory>
 </hibernate-configuration>

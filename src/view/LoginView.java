@@ -7,6 +7,7 @@ import javax.swing.border.EmptyBorder;
 import exception.LimitLoginException;
 import model.Employee;
 import utils.Constants;
+import utils.HibernateUtil;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
