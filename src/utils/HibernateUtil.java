@@ -8,14 +8,21 @@ public class HibernateUtil {
 
     private static SessionFactory buildSessionFactory() {
         try {
-            return new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
+            System.out.println("Initializing Hibernate SessionFactory...");
+            SessionFactory factory = new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
+            System.out.println("Hibernate SessionFactory initialization successful");
+            return factory;
         } catch (Throwable ex) {
-            System.err.println("SessionFactory La inicialización falló：" + ex);
+            System.err.println("SessionFactory initialization failed: " + ex);
+            ex.printStackTrace();
             throw new ExceptionInInitializerError(ex);
         }
     }
 
     public static SessionFactory getSessionFactory() {
+        if (sessionFactory == null) {
+            throw new IllegalStateException("SessionFactory has not been initialized");
+        }
         return sessionFactory;
     }
 

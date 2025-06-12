@@ -159,6 +159,7 @@ public class ProductView extends JDialog implements ActionListener {
 
             if (product != null) {
                 product.setStock(product.getStock() + stockToAdd);
+                shop.updateProductStock(product);
                 JOptionPane.showMessageDialog(this, "Stock updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
                 dispose();
             } else {
@@ -180,7 +181,7 @@ public class ProductView extends JDialog implements ActionListener {
         Product product = shop.findProduct(productName);
 
         if (product != null) {
-            shop.getInventory().remove(product);
+            shop.removeProduct(product);
             JOptionPane.showMessageDialog(this, "Product removed successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
             dispose();
         } else {

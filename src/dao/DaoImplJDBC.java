@@ -54,6 +54,7 @@ public class DaoImplJDBC implements Dao {
                 // If a result is found, create an Employee object
                 if (rs.next()) {
                    // employee = new Employee(rs.getInt(1), rs.getString(2), rs.getString(3));
+                   employee = new Employee(rs.getInt("employeeId"), rs.getString("name"));
                 }
             }
         } catch (SQLException e) {

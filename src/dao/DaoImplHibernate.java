@@ -32,7 +32,32 @@ public class DaoImplHibernate implements Dao {
 
 	@Override
 	public Employee getEmployee(int employeeId, String password) {
-		return null;
+		connect();
+		Employee employee = null;
+		try {
+			tx = session.beginTransaction();
+			Query<Employee> query = session.createQuery(
+					"FROM Employee e WHERE e.employeeId = :id AND e.password = :pwd", 
+					Employee.class);
+			query.setParameter("id", employeeId);
+			query.setParameter("pwd", password);
+			
+			List<Employee> results = query.getResultList();
+			if (!results.isEmpty()) {
+				employee = results.get(0);
+			}
+			
+			tx.commit();
+		} catch (Exception e) {
+			if (tx != null) {
+				tx.rollback();
+			}
+			System.err.println("Error authenticating employee: " + e.getMessage());
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+		return employee;
 	}
 
 	@Override
@@ -41,18 +66,27 @@ public class DaoImplHibernate implements Dao {
 		ArrayList<Product> productsList = new ArrayList<Product>();
 		try {
 			tx = session.beginTransaction();
+			
+			// Clear the session to ensure we get fresh data from the database
+			session.clear();
+			
+			// Use SQL query to get the latest data
 			Query<Product> query = session.createQuery("FROM Product p", Product.class);
 			List<Product> list = query.list();
 			productsList.addAll(list);
 
+			// Ensure all transient fields are properly initialized
 			for (Product product : productsList) {
-				product.setPrice(product.getPrice());
+				if (product.getWholesalerPrice() == null && product.getPrice() > 0) {
+					product.setPrice(product.getPrice()); // This will initialize wholesalerPrice and publicPrice
+				}
 			}
 
 			tx.commit();
 		} catch (HibernateException e) {
 			if (tx != null)
 				tx.rollback();
+			System.err.println("Error loading inventory: " + e.getMessage());
 			e.printStackTrace();
 		} finally {
 			disconnect();
@@ -67,15 +101,15 @@ public class DaoImplHibernate implements Dao {
 		try {
 			tx = session.beginTransaction();
 			Date today = new Date();
-			for (Product inventoryProduct : productList) {
+			for (Product product : productList) {
+				// Create ProductHistory object with default constructor and set properties manually
 				ProductHistory history = new ProductHistory();
-				history.setIdProduct(inventoryProduct.getId());
-				history.setName(inventoryProduct.getName());
-				history.setPrice(inventoryProduct.getPrice());
-				history.setStock(inventoryProduct.getStock());
-				history.setAvailable(inventoryProduct.isAvailable() ? 1 : 0);
+				history.setIdProduct(product.getId());
+				history.setName(product.getName());
+				history.setPrice(product.getPrice());
+				history.setStock(product.getStock());
+				history.setAvailable(product.isAvailable() ? 1 : 0);
 				history.setCreatedAt(today);
-				
 				session.save(history);
 			}
 			tx.commit();
@@ -83,6 +117,7 @@ public class DaoImplHibernate implements Dao {
 		} catch (Exception e) {
 			if (tx != null)
 				tx.rollback();
+			System.err.println("Failed to export historical records: " + e.getMessage());
 			e.printStackTrace();
 		} finally {
 			disconnect();
@@ -95,14 +130,25 @@ public class DaoImplHibernate implements Dao {
 		connect();
 		try {
 			tx = session.beginTransaction();
+			
+			// Important: Ensure price field contains the wholesalerPrice value
+			// In the Product class, wholesalerPrice is @Transient and won't be persisted by Hibernate
+			// But the price field will be persisted to the database, so we need to synchronize both values before saving
 			if (product.getWholesalerPrice() != null) {
 				product.setPrice(product.getWholesalerPrice().getValue());
 			}
+			
+			// Save the product to the database
 			session.save(product);
+			
+			// Refresh the entity to ensure it reflects the database state
+			session.refresh(product);
+			
 			tx.commit();
 		} catch (Exception e) {
 			if (tx != null)
 				tx.rollback();
+			System.err.println("Error adding product: " + e.getMessage());
 			e.printStackTrace();
 		} finally {
 			disconnect();
@@ -114,11 +160,24 @@ public class DaoImplHibernate implements Dao {
 		connect();
 		try {
 			tx = session.beginTransaction();
-			session.remove(product);
+			
+			// First get the current entity from the database to ensure we are deleting a managed object
+			Product managedProduct = session.get(Product.class, product.getId());
+			if (managedProduct == null) {
+				System.err.println("Error: Cannot find product with ID " + product.getId() + " in the database");
+				return;
+			}
+			
+			// Delete the product
+			session.delete(managedProduct);
+			
+			// Flush the session and commit the transaction
+			session.flush();
 			tx.commit();
 		} catch (Exception e) {
 			if (tx != null)
 				tx.rollback();
+			System.err.println("Error deleting product: " + e.getMessage());
 			e.printStackTrace();
 		} finally {
 			disconnect();
@@ -130,11 +189,32 @@ public class DaoImplHibernate implements Dao {
 		connect();
 		try {
 			tx = session.beginTransaction();
-			session.update(product);
+			
+			// First get the current entity from the database to ensure we are updating a managed object
+			Product managedProduct = session.get(Product.class, product.getId());
+			if (managedProduct == null) {
+				System.err.println("Error: Cannot find product with ID " + product.getId() + " in the database");
+				return;
+			}
+			
+			// Update the managed object properties
+			managedProduct.setStock(product.getStock());
+			managedProduct.setAvailable(product.isAvailable());
+			
+			// Ensure price field contains the latest wholesalerPrice value
+			if (product.getWholesalerPrice() != null) {
+				managedProduct.setPrice(product.getWholesalerPrice().getValue());
+			}
+			
+			// Use merge to ensure object state is correctly synchronized to the database
+			session.merge(managedProduct);
+			
+			// Commit the transaction
 			tx.commit();
 		} catch (Exception e) {
 			if (tx != null)
 				tx.rollback();
+			System.err.println("Error updating product: " + e.getMessage());
 			e.printStackTrace();
 		} finally {
 			disconnect();

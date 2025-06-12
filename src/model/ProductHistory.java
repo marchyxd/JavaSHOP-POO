@@ -19,7 +19,12 @@ public class ProductHistory {
 	@Column(name = "name")
 	private String name;
 	
-	@Column(name = "wholesalerPrice")
+	// Wholesale price is only used in memory, not persisted to database
+	@Transient
+	private double wholesalerPrice;
+	
+	// Only one price field is stored in the database
+	@Column(name = "price")
 	private double price;
 	
 	@Column(name = "stock")
@@ -38,6 +43,7 @@ public class ProductHistory {
 		this.createdAt = createdAt;
 		this.idProduct = idProduct;
 	}
+	
 	
 	// Getters and setters
 	public int getId() {
@@ -66,6 +72,15 @@ public class ProductHistory {
 	
 	public void setPrice(double price) {
 		this.price = price;
+		this.wholesalerPrice = price;
+	}
+	
+	public double getWholesalerPrice() {
+		return wholesalerPrice;
+	}
+	
+	public void setWholesalerPrice(double wholesalerPrice) {
+		this.wholesalerPrice = wholesalerPrice;
 	}
 	
 	public int getStock() {
