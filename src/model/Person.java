@@ -25,5 +25,5 @@ public abstract class Person{
 	}
 	
 	
-	
 }
+

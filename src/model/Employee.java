@@ -2,17 +2,23 @@ package model;
 
 import main.Logeable;
 
+import javax.persistence.*;
+
 import dao.Dao;
 import dao.DaoImplHibernate;
-import dao.DaoImplJDBC;
-import dao.DaoImplMongoDB;
 
+@Entity
+@Table(name = "employee")
 public class Employee extends Person implements Logeable {
+	@Id
+	@Column(name = "employeeId")
 	private int employeeId;
+	
+	@Column(name = "password")
 	private String password;
 	
-	// Inicializar con la implementación de DAO deseada
-	private Dao dao = new DaoImplJDBC(); 
+	@Transient
+	private Dao dao = new DaoImplHibernate(); 
 
 	public Employee() {
 	}
