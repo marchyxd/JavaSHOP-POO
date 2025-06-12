@@ -30,7 +30,7 @@ public class Shop {
     public Shop() {
         this.inventory = new ArrayList<>();
         this.sales = new ArrayList<>();
-        this.dao = new DaoImplMongoDB();
+        this.dao = new DaoImplHibernate();
     }
 
     public static void main(String[] args) {
@@ -68,7 +68,7 @@ public class Shop {
                 case 5 -> shop.showInventory();
                 case 6 -> shop.sale();
                 case 7 -> shop.showSales();
-                case 8 -> shop.removeProduct();
+                case 8 -> shop.removeProductByName();
                 case 9 -> {
                     exit = true;
                     System.out.println("Exiting program...");
@@ -142,7 +142,7 @@ public class Shop {
             System.out.print("Enter quantity to add: ");
             int stockToAdd = scanner.nextInt();
             product.setStock(product.getStock() + stockToAdd);
-            dao.updateProduct(product);
+            updateProductStock(product);
             System.out.println("Stock updated.");
         } else {
             System.out.println("Product not found.");
@@ -216,18 +216,24 @@ public class Shop {
         }
     }
 
-    public void removeProduct() {
+    public void removeProductByName() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter product name to remove: ");
         String name = scanner.next();
         Product product = findProduct(name);
 
         if (product != null) {
-            dao.deleteProduct(product);
-            inventory.remove(product);
+            removeProduct(product);
             System.out.println("Product removed.");
         } else {
             System.out.println("Product not found.");
+        }
+    }
+
+    public void removeProduct(Product product) {
+        if (product != null) {
+            dao.deleteProduct(product);
+            inventory.remove(product);
         }
     }
 
@@ -245,9 +251,10 @@ public class Shop {
             return false; // Exit early if no data
         }
 
+        System.out.println("Starting to export " + inventory.size() + " products to historical inventory...");
         boolean success = dao.writeInventory(inventory);
         if (success) {
-            System.out.println("Inventory successfully written.");
+            System.out.println("Inventory successfully written to database. Products exported: " + inventory.size());
         } else {
             System.err.println("Failed to write inventory.");
         }
@@ -258,6 +265,10 @@ public class Shop {
         return this.cash;
     }
 
-
+    public void updateProductStock(Product product) {
+        if (product != null) {
+            dao.updateProduct(product);
+        }
+    }
 
 }

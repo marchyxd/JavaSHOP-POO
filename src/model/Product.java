@@ -22,13 +22,13 @@ public class Product {
     @Transient
     private Amount wholesalerPrice;
 
-    @Column(name = "wholesalerPrice", nullable = false)
+    @Column(name = "price")
     private double price;
 
-    @Column(nullable = false)
+    @Column(name = "available")
     private boolean available;
 
-    @Column(name = "stock", nullable = false)
+    @Column(name = "stock")
     private int stock;
 
     @Transient

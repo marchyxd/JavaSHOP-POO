@@ -97,6 +97,7 @@ public class LoginView extends JFrame implements ActionListener {
         String username = textFieldUsername.getText();
         String password = textFieldPassword.getText();
         
+        System.out.println("Attempting login using Hibernate connection...");
         Employee employee = new Employee();
         boolean loginSuccessful = false;
         
@@ -117,6 +118,7 @@ public class LoginView extends JFrame implements ActionListener {
             if (loginSuccessful) {
             	 // Show success message
                 JOptionPane.showMessageDialog(this, "Log in correct.", "Correct", JOptionPane.INFORMATION_MESSAGE);
+                System.out.println("Login successful with Hibernate");
                 // Create a new ShopView
                 ShopView shopView = new ShopView();
                 // Make the ShopView visible

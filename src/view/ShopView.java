@@ -34,10 +34,10 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
         setFocusable(true);
         setVisible(true);
         
+        System.out.println("Initializing ShopView with Hibernate DAO implementation");
         // Initialize the shop and load inventory
         shop = new Shop();
         shop.loadInventory();
-        shop.writeInventory();
         
         setTitle("MyShop.com - Principal Menu");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -141,11 +141,31 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
     }
     
     private void exportInventory() {
-        boolean success = shop.writeInventory();
-        if (success) {
-            JOptionPane.showMessageDialog(this, "Inventory exported successfully" , "Export Successful", JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            JOptionPane.showMessageDialog(this, "Error exporting inventory.", "Export Error", JOptionPane.ERROR_MESSAGE);
+        // 添加确认对话框
+        int confirm = JOptionPane.showConfirmDialog(
+            this,
+            "Are you sure you want to export the inventory to history?",
+            "Confirm Export",
+            JOptionPane.YES_NO_OPTION
+        );
+        
+        if (confirm == JOptionPane.YES_OPTION) {
+            boolean success = shop.writeInventory();
+            if (success) {
+                JOptionPane.showMessageDialog(
+                    this,
+                    "Inventory exported successfully at " + java.time.LocalDateTime.now(),
+                    "Export Successful",
+                    JOptionPane.INFORMATION_MESSAGE
+                );
+            } else {
+                JOptionPane.showMessageDialog(
+                    this,
+                    "Error exporting inventory.",
+                    "Export Error",
+                    JOptionPane.ERROR_MESSAGE
+                );
+            }
         }
     }
 

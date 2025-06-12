@@ -3,13 +3,16 @@ package model;
 import main.Logeable;
 
 import dao.Dao;
+import dao.DaoImplHibernate;
 import dao.DaoImplJDBC;
 import dao.DaoImplMongoDB;
 
 public class Employee extends Person implements Logeable {
 	private int employeeId;
 	private String password;
-	private String name;
+	
+	// Inicializar con la implementación de DAO deseada
+	private Dao dao = new DaoImplJDBC(); 
 
 	public Employee() {
 	}
@@ -27,36 +30,18 @@ public class Employee extends Person implements Logeable {
 	
 	@Override
 	public boolean login(int user, String pw) {
-		try {
-			Dao dao = new DaoImplMongoDB();
-			Employee authEmployee = dao.getEmployee(user, pw);
-			return authEmployee != null;
-		} catch (Exception e) {
-			System.err.println("Error during login: " + e.getMessage());
-			e.printStackTrace();
-			return false;
-		}
-	}
-/** 
-	// Implementation of the login method from the Logeable interface
-	@Override
-	public boolean login(int employeeId, String password) {
-		// Connect to the database
 		dao.connect();
-		// Fetch the employee
-		Employee employee = dao.getEmployee(employeeId, password);
-
+		Employee employee = dao.getEmployee(user, pw);
+		
 		if (employee != null) {
-			// Disconnect from the database
 			dao.disconnect();
-			// Return true if employee exists
 			return true;
 		} else {
-			// Return false if login fails
+			dao.disconnect();
 			return false;
 		}
 	}
-**/
+
 	public int getEmployeeId() {
 		return employeeId;
 	}
@@ -75,16 +60,16 @@ public class Employee extends Person implements Logeable {
 
 	@Override
 	public String getName() {
-		return name;
+		return super.getName();
 	}
 
 	@Override
 	public void setName(String name) {
-		this.name = name;
+		super.setName(name);
 	}
 
 	@Override
 	public String toString() {
-		return "Employee{" + "employeeId=" + employeeId + ", name='" + name + '\'' + '}';
+		return "Employee{" + "employeeId=" + employeeId + ", name='" + super.getName() + '\'' + '}';
 	}
 }

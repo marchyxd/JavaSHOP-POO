@@ -22,5 +22,6 @@
         <!-- Mapear clases del modelo -->
         <mapping class="model.Product"/>
         <mapping class="model.ProductHistory"/>
+        <!-- La clase Employee no se mapea con Hibernate -->
     </session-factory>
 </hibernate-configuration>
